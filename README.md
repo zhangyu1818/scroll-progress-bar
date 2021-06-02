@@ -1,5 +1,9 @@
 # scroll-progress-bar
 
+![npm-version](https://img.shields.io/npm/v/scroll-progress-bar.svg)
+![bundlesize-js-image](https://img.badgesize.io/https:/unpkg.com/scroll-progress-bar/es/index.js?label=gzip&compression=gzip&style=flat-square)
+
+
 A progress bar for scroll.
 
 ## Install

@@ -16,9 +16,6 @@ const config: ScrollProgressConfig = {
 }
 
 let id: number
-const progressEle = document.createElement('div')
-progressEle.id = config.id!
-progressEle.className = config.transitionCls!
 
 // https://javascript.info/size-and-scroll-window#width-height-of-the-document
 const getScrollHeight = () =>
@@ -31,7 +28,29 @@ const getScrollHeight = () =>
     document.documentElement.clientHeight
   )
 
+const initialElement = () => {
+  const progressEle = document.createElement('div')
+  const { id, debounce, transitionCls } = config
+  if (debounce && transitionCls) {
+    progressEle.className = transitionCls
+  }
+  if (id) {
+    progressEle.id = id
+  }
+  return progressEle
+}
+
+const getElement = () => document.getElementById(config.id!)
+
+const removeElement = (ele: HTMLElement) => {
+  ele?.parentNode?.removeChild(ele)
+}
+
 const onScroll = () => {
+  const progressEle = getElement()
+  if (!progressEle) {
+    return
+  }
   const scrollHeight = getScrollHeight()
   const { innerHeight, pageYOffset } = window
   const scrollDistance = scrollHeight - innerHeight - config.offset!
@@ -40,35 +59,30 @@ const onScroll = () => {
   if (debounce) {
     window.clearTimeout(id)
     id = window.setTimeout(() => {
-      progressEle.style.width = `${percent}%`
+      progressEle!.style.width = `${percent}%`
     }, 50)
   } else {
-    progressEle.style.width = `${percent}%`
+    progressEle!.style.width = `${percent}%`
   }
 }
 
 const show = () => {
+  const progressEle = initialElement()
   document.body.append(progressEle)
   progressEle.style.width = `0%`
   window.addEventListener('scroll', onScroll)
 }
 
 const hide = () => {
-  document.body.removeChild(progressEle)
+  const progressEle = getElement()
+  if (progressEle) {
+    removeElement(progressEle)
+  }
   window.removeEventListener('scroll', onScroll)
-  progressEle.style.width = ``
 }
 
 const setConfig = (cfg: ScrollProgressConfig) => {
   Object.assign(config, cfg)
-  const { id, debounce, transitionCls } = config
-  if (debounce && transitionCls) {
-    progressEle.className = transitionCls
-  }
-
-  if (id) {
-    progressEle.id = id
-  }
 }
 
 const progressBar = {
