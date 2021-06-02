@@ -30,7 +30,6 @@ progressBar.hide();
 // set scroll progress bar configuration
 progressBar.setConfig({
     debounce: true,
-    transitionCls: 'progress-transition',
 })
 
 ```
@@ -45,7 +44,5 @@ export interface ScrollProgressConfig {
   offset?: number
   // scroll debounce
   debounce?: boolean
-  // element transition class name, effective when debounce is true
-  transitionCls?: string
 }
 ```
