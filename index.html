@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>scroll progress</title>
+    <link rel="stylesheet" href="./style.css" />
+    <style>
+      body {
+        height: 1000vh;
+      }
+      .controller {
+        position: fixed;
+        top: 10vh;
+        left: 2vw;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="controller">
+      <button id="debounceBtn">debounce</button>
+      <button id="debounceOffBtn">debounce off</button>
+      <button id="hideBtn">hide</button>
+      <button id="showBtn">show</button>
+    </div>
+    <script type="module">
+      import progressBar from './index.js'
+      progressBar.setConfig({
+        debounce: true,
+        transitionCls: 'progress-transition',
+      })
+      progressBar.show()
+      debounceBtn.onclick = () => {
+        progressBar.setConfig({
+          debounce: true,
+        })
+      }
+      debounceOffBtn.onclick = () => {
+        progressBar.setConfig({
+          debounce: false,
+        })
+      }
+      hideBtn.onclick = () => {
+        progressBar.hide()
+      }
+      showBtn.onclick = () => {
+        progressBar.show()
+      }
+    </script>
+  </body>
+</html>

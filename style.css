@@ -1,0 +1,12 @@
+#scroll-progress {
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: #29d;
+  z-index: 1051;
+  height: 4px;
+}
+
+.progress-transition {
+  transition: width 300ms ease-out;
+}
