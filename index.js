@@ -1,17 +1,14 @@
 const config = {
     id: 'scroll-progress',
-    transitionCls: 'progress-transition',
     offset: 0,
 };
 let id;
+let scrolling = false;
 // https://javascript.info/size-and-scroll-window#width-height-of-the-document
 const getScrollHeight = () => Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, document.body.offsetHeight, document.documentElement.offsetHeight, document.body.clientHeight, document.documentElement.clientHeight);
 const initialElement = () => {
     const progressEle = document.createElement('div');
-    const { id, debounce, transitionCls } = config;
-    if (debounce && transitionCls) {
-        progressEle.className = transitionCls;
-    }
+    const { id } = config;
     if (id) {
         progressEle.id = id;
     }
@@ -21,15 +18,18 @@ const getElement = () => document.getElementById(config.id);
 const removeElement = (ele) => {
     ele?.parentNode?.removeChild(ele);
 };
+const getScrollPercent = () => {
+    const scrollHeight = getScrollHeight();
+    const { innerHeight, pageYOffset } = window;
+    const scrollDistance = scrollHeight - innerHeight - config.offset;
+    return Math.min(1.0, pageYOffset / scrollDistance) * 100;
+};
 const onScroll = () => {
     const progressEle = getElement();
     if (!progressEle) {
         return;
     }
-    const scrollHeight = getScrollHeight();
-    const { innerHeight, pageYOffset } = window;
-    const scrollDistance = scrollHeight - innerHeight - config.offset;
-    const percent = Math.min(1.0, pageYOffset / scrollDistance) * 100;
+    const percent = getScrollPercent();
     const { debounce } = config;
     if (debounce) {
         window.clearTimeout(id);
@@ -38,13 +38,22 @@ const onScroll = () => {
         }, 50);
     }
     else {
-        progressEle.style.width = `${percent}%`;
+        // throttled update
+        // https://github.com/devjmetivier/gatsby-plugin-page-progress/blob/master/src/gatsby-browser.js#L118
+        if (!scrolling) {
+            window.requestAnimationFrame(() => {
+                progressEle.style.width = `${percent}%`;
+                scrolling = false;
+            });
+            scrolling = true;
+        }
     }
 };
 const show = () => {
     const progressEle = initialElement();
     document.body.append(progressEle);
-    progressEle.style.width = `0%`;
+    const percent = getScrollPercent();
+    progressEle.style.width = `${percent}%`;
     window.addEventListener('scroll', onScroll);
 };
 const hide = () => {

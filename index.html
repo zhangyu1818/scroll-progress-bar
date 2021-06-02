@@ -29,10 +29,7 @@
     </div>
     <script type="module">
       import progressBar from './index.js'
-      progressBar.setConfig({
-        debounce: true,
-        transitionCls: 'progress-transition',
-      })
+
       progressBar.show()
       debounceBtn.onclick = () => {
         progressBar.setConfig({

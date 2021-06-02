@@ -5,8 +5,5 @@
   background: #29d;
   z-index: 1051;
   height: 4px;
-}
-
-.progress-transition {
-  transition: width 300ms ease-out;
+  transition: width 200ms;
 }
