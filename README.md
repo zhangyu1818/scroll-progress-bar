@@ -4,16 +4,16 @@
 ![bundlesize-js-image](https://img.badgesize.io/https:/unpkg.com/scroll-progress-bar/es/index.js?label=gzip&compression=gzip&style=flat-square)
 
 
-A progress bar for scroll.
+A progress bar for scroll, support SSR.
 
 ## Install
 
 ```npm
-    npm install scroll-progress-bar
+npm install scroll-progress-bar
 ```
 
 ```yarn
-    yarn add scroll-progress-bar
+yarn add scroll-progress-bar
 ```
 
 ## Usage
